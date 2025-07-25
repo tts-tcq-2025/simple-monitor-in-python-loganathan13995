@@ -1,16 +1,29 @@
+def is_temperature_ok(t):
+    return 0<=t <= 45
+
+def is_soc_ok(s):
+    return 20<=s <=80
+
+def is_charge_rate_ok(cr):
+    return cr <=0.8
+
 
 def battery_is_ok(temperature, soc, charge_rate):
-  if temperature < 0 or temperature > 45:
-    print('Temperature is out of range!')
-    return False
-  elif soc < 20 or soc > 80:
-    print('State of Charge is out of range!')
-    return False
-  elif charge_rate > 0.8:
-    print('Charge rate is out of range!')
-    return False
+    # Define checks as a list of (condition_lambda, message) tuples
+    checks = [
+        (is_temperature_ok, 'Temperature is out of range!'),
+        (is_soc_ok, 'State of Charge is out of range!'),
+        (is_charge_rate_ok, 'Charge rate is out of range!')
+    ]
 
-  return True
+    # Map parameters to a tuple for easier iteration
+    params = (temperature, soc, charge_rate)
+
+    for i, (condition_func, message) in enumerate(checks): # CCN: +1 (for loop)
+        if not condition_func(params[i]):
+            print(message)
+            return False
+    return True
 
 
 if __name__ == '__main__':
